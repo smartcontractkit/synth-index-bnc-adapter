@@ -3,7 +3,7 @@ const snx = require('synthetix')
 
 const getPriceData = async (synth) => {
   return rp({
-    url: 'https://api.bravenewcoin.com/chainlink/mwa-historic',
+    url: 'https://api.bravenewcoin.com/chainlink/gwa-historic',
     headers: {
       'X-Chainlink-API-Key': process.env.API_KEY
     },
@@ -15,8 +15,12 @@ const getPriceData = async (synth) => {
   })
 }
 
-const calculateIndex = (data) => {
-  return 1
+const calculateIndex = (indexes) => {
+  let value = 0
+  indexes.forEach(i => {
+    value += +i.units * +i.priceData.data[0][1]
+  })
+  return value
 }
 
 const createRequest = async (input, callback) => {
@@ -26,7 +30,7 @@ const createRequest = async (input, callback) => {
     synth.priceData = await getPriceData(synth)
   }))
 
-  data.result = calculateIndex(data)
+  data.result = calculateIndex(data.index)
 
   callback(200, {
     jobRunID: input.id,
