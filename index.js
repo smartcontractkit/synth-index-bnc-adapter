@@ -25,8 +25,9 @@ const calculateIndex = (indexes) => {
 }
 
 const createRequest = async (input, callback) => {
+  const asset = input.data.asset || 'sCEX'
   const datas = snx.getSynths({ network: 'mainnet' }).filter(({ index, inverted }) => index && !inverted)
-  const data = datas.find(d => d.name === 'sCEX')
+  const data = datas.find(d => d.name.toLowerCase() === asset.toLowerCase())
   await Promise.all(data.index.map(async (synth) => {
     synth.priceData = await getPriceData(synth)
   }))
