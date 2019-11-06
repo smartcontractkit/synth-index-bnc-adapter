@@ -1,5 +1,6 @@
 const rp = require('request-promise')
 const snx = require('synthetix')
+const Decimal = require('decimal.js')
 
 const getPriceData = async (synth) => {
   return rp({
@@ -16,11 +17,11 @@ const getPriceData = async (synth) => {
 }
 
 const calculateIndex = (indexes) => {
-  let value = 0
+  let value = new Decimal(0)
   indexes.forEach(i => {
-    value += +i.units * +i.priceData.data[0][1]
+    value = value.plus(new Decimal(i.units).times(new Decimal(i.priceData.data[0][1])))
   })
-  return value
+  return value.toNumber()
 }
 
 const createRequest = async (input, callback) => {
