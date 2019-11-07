@@ -1,6 +1,6 @@
-# Chainlink External Adapter for Synthetix's sCEX Index
+# Chainlink External Adapter for Synthetix's Index (BraveNewCoin)
 
-This adapter pulls the indexes for Synthetix's sCEX synth, retrieves the current market price for each asset from Brave New Coin, and calculates a weighted index.
+This adapter pulls the indexes for Synthetix's index synths, retrieves the current market price for each asset from Brave New Coin, and calculates a weighted index.
 
 ## Install
 
@@ -17,7 +17,7 @@ npm test
 ## Create the zip
 
 ```bash
-zip -r cl-scex-bnc.zip .
+zip -r cl-synth-index-bnc.zip .
 ```
 
 ## Install to AWS Lambda
@@ -29,7 +29,7 @@ zip -r cl-scex-bnc.zip .
   - Choose an existing role or create a new one
   - Click Create Function
 - Under Function code, select "Upload a .zip file" from the Code entry type drop-down
-- Click Upload and select the `cl-scex-bnc.zip` file
+- Click Upload and select the `cl-synth-index-bnc.zip` file
 - Handler should remain index.handler
 - Add the environment variable (repeat for all environment variables):
   - Key: API_KEY
@@ -40,7 +40,7 @@ zip -r cl-scex-bnc.zip .
 ## Install to GCP
 
 - In Functions, create a new function, choose to ZIP upload
-- Click Browse and select the `cl-scex-bnc.zip` file
+- Click Browse and select the `cl-synth-index-bnc.zip` file
 - Select a Storage Bucket to keep the zip in
 - Function to execute: gcpservice
 - Click More, Add variable (repeat for all environment variables)
