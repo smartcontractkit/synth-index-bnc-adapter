@@ -2,15 +2,20 @@ const rp = require('request-promise')
 const snx = require('synthetix')
 const Decimal = require('decimal.js')
 
+const host = 'bravenewcoin-v1.p.rapidapi.com'
+const url = 'https://' + host + '/convert'
+
 const getPriceData = async (synth) => {
   return rp({
-    url: 'https://api.bravenewcoin.com/chainlink/gwa-historic',
+    url: url,
     headers: {
-      'X-Chainlink-API-Key': process.env.API_KEY
+      'x-rapidapi-host': host,
+      'x-rapidapi-key': process.env.API_KEY
     },
     qs: {
-      market: 'USD',
-      coin: synth.symbol
+      qty: 1,
+      to: 'USD',
+      from: synth.symbol
     },
     json: true
   })
@@ -19,14 +24,14 @@ const getPriceData = async (synth) => {
 const calculateIndex = (indexes) => {
   let value = new Decimal(0)
   indexes.forEach(i => {
-    value = value.plus(new Decimal(i.units).times(new Decimal(i.priceData.data[0][1])))
+    value = value.plus(new Decimal(i.units).times(new Decimal(i.priceData.to_quantity)))
   })
   return value.toNumber()
 }
 
 const createRequest = async (input, callback) => {
   const asset = input.data.asset || 'sCEX'
-  const datas = snx.getSynths({ network: 'mainnet' }).filter(({ index, inverted }) => index && !inverted)
+  const datas = snx.getSynths({network: 'mainnet'}).filter(({index, inverted}) => index && !inverted)
   const data = datas.find(d => d.name.toLowerCase() === asset.toLowerCase())
   await Promise.all(data.index.map(async (synth) => {
     synth.priceData = await getPriceData(synth)
