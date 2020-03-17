@@ -17,7 +17,6 @@ describe('createRequest', () => {
         assert.equal(statusCode, 200)
         assert.equal(data.jobRunID, jobID)
         assert.isNotEmpty(data.data)
-        console.log(JSON.stringify(data, null, 1))
         done()
       })
     })
@@ -31,12 +30,11 @@ describe('createRequest', () => {
       }
     }
 
-    it.skip('returns data to the node', (done) => {
+    it('returns data to the node', (done) => {
       createRequest(req, (statusCode, data) => {
         assert.equal(statusCode, 200)
         assert.equal(data.jobRunID, jobID)
         assert.isNotEmpty(data.data)
-        console.log(JSON.stringify(data, null, 1))
         done()
       })
     })
